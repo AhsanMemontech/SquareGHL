@@ -7,7 +7,7 @@ app.use(express.json());
 
 // Step 1: Send user to Square OAuth screen
 app.get("/auth", (req, res) => {
-  const redirectUrl = `https://connect.squareupsandbox.com/oauth2/authorize?client_id=${process.env.SQUARE_APP_ID}&scope=ORDERS_READ+CUSTOMERS_READ&session=false`;
+  const redirectUrl = `https://connect.squareup.com/oauth2/authorize?client_id=${process.env.SQUARE_APP_ID}&scope=ORDERS_READ+CUSTOMERS_READ&session=false`;
   res.redirect(redirectUrl);
 });
 
@@ -20,7 +20,7 @@ app.get("/square/callback", async (req, res) => {
   }
 
   // Step 3: Exchange code for access token
-  const tokenResp = await fetch("https://connect.squareupsandbox.com/oauth2/token", {
+  const tokenResp = await fetch("https://connect.squareup.com/oauth2/token", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -56,7 +56,7 @@ app.post("/square-webhook", async (req, res) => {
 
       // 🔹 Fetch full order details
       const orderResponse = await fetch(
-        `https://connect.squareupsandbox.com/v2/orders/${orderId}`,
+        `https://connect.squareup.com/v2/orders/${orderId}`,
         {
           headers: {
             Authorization: `Bearer ${process.env.SQUARE_ACCESS_TOKEN}`,
@@ -115,7 +115,7 @@ app.post("/square-webhook", async (req, res) => {
       // Optionally fetch customer info
       if (customerId) {
         const customerResponse = await fetch(
-          `https://connect.squareupsandbox.com/v2/customers/${customerId}`,
+          `https://connect.squareup.com/v2/customers/${customerId}`,
           {
             headers: {
               Authorization: `Bearer ${process.env.SQUARE_ACCESS_TOKEN}`,
